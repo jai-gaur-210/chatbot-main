@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
-    
-</head>
-<body>
-    <div class="chatbot-container">
-        <div id="header">
-            <h1>Chatbot</h1>
-            <button type="submit" id="submit-btn" class="sendButton" >Delete Chat</button>
-        </div>
-        <div id="chatbot">
-          <div id="conversation">
-            <div class="chatbot-message">
-                <div class="avatar">
-                  <img src="th.png" alt="Avatar" class="avatar">
-                </div>
-                <p class="chatbot-text">Hi! 👋 it's great to see you!</p>
-              </div>
-            </div>
-            <form id="input-form">
-              <message-container>
-                <input id="input-field" type="text" placeholder="Type your message here">
-                <button id="submit-button" type="submit"><i class='attachment bx bx-link-alt'></i></button>
-                  <button type="submit" id="submit-btn" class="sendButton">Send</button>
-              </message-container> 
-            </form>
-        </div>  
 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"></script> -->
+
+</head>
+
+<body>
+  <div class="chatbot-container">
+    <div id="header">
+      <h1>Chatbot</h1>
+      <button type="submit" id="submit-btn" class="sendButton">Delete Chat</button>
     </div>
-    
-    <script src="config.js"></script>
-    <script src="chatbot.js"></script>
+    <div id="chatbot">
+      <div id="conversation">
+        <div class="chatbot-message">
+          <div class="avatar">
+            <img src="th.png" alt="Avatar" class="avatar">
+          </div>
+          <p class="chatbot-text">Hi! 👋 it's great to see you!</p>
+        </div>
+      </div>
+      <form id="input-form">
+        <message-container>
+          <input id="input-field" type="text" placeholder="Type your message here">
+          <input id="fileInput" type=file hidden>
+          <i id="upload-button" class='attachment bx bx-link-alt'></i>
+          <button onclick="readPDF()">Read PDF</button>
+
+          <button type="submit" id="submit-btn" class="sendButton">Send</button>
+        </message-container>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="config.js"></script>
+  <script src="chatbot.js"></script>
 </body>
+
 </html>

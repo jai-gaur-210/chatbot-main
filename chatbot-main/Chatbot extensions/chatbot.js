@@ -1,9 +1,11 @@
+
+
 // Get chatbot elements
 const chatbot = document.getElementById('chatbot');
 const conversation = document.getElementById('conversation');
 const inputForm = document.getElementById('input-form');
 const inputField = document.getElementById('input-field');
-
+var uuid_number;
 // Scroll to bottom of conversation
 // conversation.scrollTop = conversation.scrollHeight;
 
@@ -55,8 +57,7 @@ inputForm.addEventListener('submit', async function (event) {
   conversation.appendChild(message);
 
   // Generate chatbot response
-  const response = await generateResponse(input);
-
+  var response = await generateResponse(input);
   // Add chatbot response to conversation
   message = document.createElement('div');
   message.classList.add('chatbot-message', 'chatbot');
@@ -78,32 +79,65 @@ async function generateResponse(input) {
       const response = 'enter a question';
       return response;
     }
-    input = input + " answer in less than 50 words"
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ "role": "user", "content": input }],
-        "max_tokens": 50,
-      })
+    const response = await fetch('https://api.jugalbandi.ai/query-with-gptindex?uuid_number='+uuid_number+'&query_string='+input, {
+    
     })
     console.log(response)
     const data = await response.json();
-    console.log(data.choices[0].message.content); // log the response data to inspect its structure
-    const message = data.choices[0].message.content
-
+    console.log(data.answer); // log the response data to inspect its structure
+    const message = data.answer
     // Save chatbot response to local storage
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
     conversationHistory.push({ sender: 'chatbot', message: message, time: currentTime });
     localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
-
     return message;
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return "I'm sorry, I'm having trouble processing your request right now. Please try again later.";
   }
 }
+
+const uploadPdf = document
+  .querySelector("#upload-button");
+
+const takeInput = document
+  .querySelector("#fileInput");
+
+uploadPdf.addEventListener("click", (e) => {
+  takeInput.click();
+});
+
+async function readPDF() {
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+  inputField.value = file.name;
+  console.log(file.name);
+  var data = new FormData();
+  data.append('files', file);
+
+  const response = await fetch('https://api.jugalbandi.ai/upload-files?description=File Upload', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+    },
+    body: data
+  });
+
+  const res = await response.json();
+  console.log(res);
+
+  if (res && res.message) {
+    output = res.message;
+    uuid_number = res.uuid_number;
+    console.log(uuid_number);
+    console.log(output);
+    if (output) {
+      toastr.success(output);
+    } else {
+      // Output is not defined or empty
+      toastr.error("No output available");
+    }
+  }
+}
+
+
